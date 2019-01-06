@@ -80,6 +80,23 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, @enigma.offsets
   end
 
+  #Need better ways to test this
+  def test_it_defaults_to_random_key
+    #Tested with today's date = 060119
+    date = Time.local(2019, 1, 6)
+    Timecop.freeze(date)
+
+    @enigma.encrypt("hello world")
+
+    assert_equal 5, @enigma.encrypt[:key].length
+
+    expected = @enigma.keys.all? do |key|
+      (0..99).includes?(key)
+    end
+
+    assert_equal true, expected
+  end
+
   def test_it_encrypts_with_todays_date
     #Tested with today's date = 060119
     date = Time.local(2019, 1, 6)
