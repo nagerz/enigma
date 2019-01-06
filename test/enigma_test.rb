@@ -1,7 +1,7 @@
 require './test/test_helper'
 require 'date'
+require 'timecop'
 require './lib/enigma'
-
 
 class EnigmaTest < Minitest::Test
 
@@ -66,6 +66,18 @@ class EnigmaTest < Minitest::Test
     actual = @enigma.decrypt("keder ohulw", "02715", "040895")
 
     assert_equal expected, actual
+  end
+
+  def test_it_defaults_to_todays_date
+    #Tested with today's date = 060119
+    date = Time.local(2019, 1, 6)
+    Timecop.freeze(date)
+
+    @enigma.encrypt("hello world", "02715")
+
+    expected = [4, 1, 6, 1]
+
+    assert_equal expected, @enigma.offsets
   end
 
   def test_it_encrypts_with_todays_date
