@@ -18,6 +18,13 @@ class EnigmaTest < Minitest::Test
     assert_equal [], @enigma.offsets
   end
 
+  def test_it_creates_shift_keys
+    @enigma.encrypt("hello world", "02715", "040895")
+
+    expected = [02, 27, 71, 15]
+    assert_equal expected, @enigma.keys
+  end
+
   def test_it_encrypts
     skip
     expected = {
