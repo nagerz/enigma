@@ -11,11 +11,15 @@ class Enigma
   end
 
   def encrypt(message, key, date)
-    @keys = create_keys(key)
-    @offsets = create_offsets(date)
+    create_keys(key)
+    create_offsets(date)
   end
 
   def create_offsets(date)
+    date_squared = (date.to_i**2).to_s
+    date_squared.split(//).last(4).each do |offset|
+      @offsets << offset.to_i
+    end
   end
 
 

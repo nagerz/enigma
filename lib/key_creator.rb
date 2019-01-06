@@ -4,7 +4,7 @@ module KeyCreator
     pairs = []
     key.chars.each_cons(2) {|a| pairs << a}
     pairs.map do |pair|
-      pair.join.to_i
+      @keys << pair.join.to_i
     end
   end
 
