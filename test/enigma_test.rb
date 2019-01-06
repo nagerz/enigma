@@ -16,6 +16,7 @@ class EnigmaTest < Minitest::Test
   def test_it_has_attributes
     assert_equal [], @enigma.keys
     assert_equal [], @enigma.offsets
+    assert_equal [], @enigma.shifts
   end
 
   def test_it_creates_shift_keys
@@ -30,6 +31,13 @@ class EnigmaTest < Minitest::Test
 
     expected = [1, 0, 2, 5]
     assert_equal expected, @enigma.offsets
+  end
+
+  def test_it_creates_shifts
+    @enigma.encrypt("hello world", "02715", "040895")
+
+    expected = [3, 27, 73, 20]
+    assert_equal expected, @enigma.shifts
   end
 
   def test_it_encrypts
