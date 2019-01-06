@@ -113,6 +113,19 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, actual
   end
 
+  def test_it_encrypts_with_random_key_and_todays_date
+    skip
+    expected = {
+      decryption: "hello world",
+      key: "02715",
+      date: "040895"
+      }
+
+    actual = @enigma.encrypt("hello world")
+
+    assert_equal expected, actual
+  end
+
   def test_it_decrypts_with_todays_date
     skip
     expected = {
@@ -126,17 +139,6 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, actual
   end
 
-  def test_it_encrypts_with_random_key_and_todays_date
-    skip
-    expected = {
-      decryption: "hello world",
-      key: "02715",
-      date: "040895"
-      }
 
-    actual = @enigma.encrypt("hello world")
-
-    assert_equal expected, actual
-  end
 
 end
