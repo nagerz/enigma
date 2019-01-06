@@ -86,12 +86,12 @@ class EnigmaTest < Minitest::Test
     date = Time.local(2019, 1, 6)
     Timecop.freeze(date)
 
-    @enigma.encrypt("hello world")
+    result = @enigma.encrypt("hello world")
 
-    assert_equal 5, @enigma.encrypt[:key].length
+    assert_equal 5, result[:key].length
 
     expected = @enigma.keys.all? do |key|
-      (0..99).includes?(key)
+      (0..99).include?(key)
     end
 
     assert_equal true, expected

@@ -6,9 +6,11 @@ module KeyCreator
     pairs.map do |pair|
       @keys << pair.join.to_i
     end
+    @keys
   end
 
-  def generate_key
+  def random_key
+    sprintf '%05d', rand(1..99999)
   end
 
 end
