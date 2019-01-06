@@ -81,11 +81,14 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_encrypts_with_todays_date
-    skip
+    #Tested with today's date = 060119
+    date = Time.local(2019, 1, 6)
+    Timecop.freeze(date)
+
     expected = {
-      encryption: "keder ohulw",
+      encryption: "nfhauasdxm ",
       key: "02715",
-      date: "040895"
+      date: "060119"
       }
 
     actual = @enigma.encrypt("hello world", "02715")
