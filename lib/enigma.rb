@@ -12,7 +12,7 @@ class Enigma
     @char_set = ("a".."z").to_a << " "
   end
 
-  def encrypt(message, key, date)
+  def encrypt(message, key, date = Date.today.strftime("%d%m%y"))
     create_keys(key)
     create_offsets(date)
     @shifts = [@keys,@offsets].transpose.map {|pair| pair.sum}
