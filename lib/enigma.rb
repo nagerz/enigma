@@ -12,7 +12,7 @@ class Enigma
 
   def encrypt(message, key, date)
     @keys = create_keys(key)
-    # create_offsets(date)
+    @offsets = create_offsets(date)
   end
 
   def create_offsets(date)
