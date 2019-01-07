@@ -148,12 +148,12 @@ class EnigmaTest < Minitest::Test
 
   def test_it_can_crack_with_a_date
     expected = {
-      decryption: "hello world",
-      date: "040895",
-      key: "02715"
+      decryption: "hello world end",
+      date: "291018",
+      key: "08304"
     }
 
-    actual = @enigma.crack("keder ohulw", "040895")
+    actual = @enigma.crack("vjqtbeaweqihssi", "291018")
 
     assert_equal expected, actual
   end

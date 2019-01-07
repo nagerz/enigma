@@ -101,7 +101,54 @@ class Enigma
     return decrypted
   end
 
-  def crack(ciphertext, date)
+  def crack(ciphertext, date = Date.today.strftime("%d%m%y"))
+    cipher_letters = ciphertext.downcase.split(//).pop(4)
+    hint = [" ", "e", "n", "d"]
+    shift_index = (ciphertext.length % 4) - 1
+    index = 3
+    cipher_letters.each do |letter|
+      shift = @char_set.index(cipher_letters[index]) - @char_set.index(hint[index])
+      # shift = (shift + 27) % 27
+      @shifts[shift_index] = shift
+      index -= 1
+      shift_index = (shift_index + 3) % 4
+    end
+
+    simple_shifts = @shifts.map {|shift| shift % 27}
+    decrypted_message = []
+    split_cipher = ciphertext.downcase.split(//)
+    split_index = 0
+    split_cipher.each do |letter|
+      if @char_set.include?(letter)
+        if split_index % 4 == 0
+          shift_index = (@char_set.index(letter) - simple_shifts[0]) % 27
+          decrypted_letter = @char_set[shift_index]
+          decrypted_message << decrypted_letter
+        elsif split_index % 4 == 1
+          shift_index = (@char_set.index(letter) - simple_shifts[1]) % 27
+          decrypted_letter = @char_set[shift_index]
+          decrypted_message << decrypted_letter
+        elsif split_index % 4 == 2
+          shift_index = (@char_set.index(letter) - simple_shifts[2]) % 27
+          decrypted_letter = @char_set[shift_index]
+          decrypted_message << decrypted_letter
+        elsif split_index % 4 == 3
+          shift_index = (@char_set.index(letter) - simple_shifts[3]) % 27
+          decrypted_letter = @char_set[shift_index]
+          decrypted_message << decrypted_letter
+        end
+      else
+        decrypted_message << letter
+      end
+      split_index += 1
+    end
+
+    decrypted = {}
+    decrypted[:decryption] = decrypted_message.join
+    #decrypted[:key] = key
+    #decrypted[:date] = date
+    return decrypted
+
   end
 
 
