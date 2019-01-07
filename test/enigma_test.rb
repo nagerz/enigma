@@ -55,19 +55,6 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, actual
   end
 
-  def test_it_decrypts
-    skip
-    expected = {
-      decryption: "hello world",
-      key: "02715",
-      date: "040895"
-      }
-
-    actual = @enigma.decrypt("keder ohulw", "02715", "040895")
-
-    assert_equal expected, actual
-  end
-
   def test_it_defaults_to_todays_date
     #Tested with today's date = 060119
     date = Time.local(2019, 1, 6)
@@ -122,6 +109,18 @@ class EnigmaTest < Minitest::Test
       }
 
     actual = @enigma.encrypt("hello world")
+
+    assert_equal expected, actual
+  end
+
+  def test_it_decrypts
+    expected = {
+      decryption: "hello world",
+      key: "02715",
+      date: "040895"
+      }
+
+    actual = @enigma.decrypt("keder ohulw", "02715", "040895")
 
     assert_equal expected, actual
   end
