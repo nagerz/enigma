@@ -146,6 +146,37 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, actual
   end
 
+  def test_it_can_crack_with_a_date
+    expected = {
+      decryption: "hello world end",
+      date: "291018",
+      key: "08304"
+    }
+
+    actual = @enigma.crack("vjqtbeaweqihssi", "291018")
+
+    assert_equal expected, actual
+  end
+
+  def test_it_can_crack_with_todays_date
+    skip
+    #Tested with today's date = 060119
+    date = Time.local(2019, 1, 6)
+    Timecop.freeze(date)
+
+    encrypted = @enigma.encrypt("hello world")
+
+    expected = {
+      decryption: "hello world",
+      date: "060119",
+      key: encrypted[:key]
+    }
+
+    actual = @enigma.crack(encrypted[:encryption])
+
+    assert_equal expected, actual
+  end
+
 
 
 end
