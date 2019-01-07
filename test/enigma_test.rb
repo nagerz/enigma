@@ -164,15 +164,13 @@ class EnigmaTest < Minitest::Test
     date = Time.local(2019, 1, 6)
     Timecop.freeze(date)
 
-    encrypted = @enigma.encrypt("hello world")
-
     expected = {
-      decryption: "hello world",
+      decryption: "hello world end",
       date: "060119",
-      key: encrypted[:key]
+      key: ""
     }
 
-    actual = @enigma.crack(encrypted[:encryption])
+    actual = enigma.crack("vjqtbeaweqihssi")
 
     assert_equal expected, actual
   end
