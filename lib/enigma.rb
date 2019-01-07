@@ -101,5 +101,8 @@ class Enigma
     return decrypted
   end
 
+  def crack(ciphertext, date)
+  end
+
 
 end
