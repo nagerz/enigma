@@ -100,17 +100,20 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, actual
   end
 
+  #How to test?
   def test_it_encrypts_with_random_key_and_todays_date
     skip
+    #Tested with today's date = 060119
+    date = Time.local(2019, 1, 6)
+    Timecop.freeze(date)
+
     expected = {
-      decryption: "hello world",
+      encryption: "hello world",
       key: "02715",
-      date: "040895"
+      date: "060119"
       }
 
-    actual = @enigma.encrypt("hello world")
-
-    assert_equal expected, actual
+    assert_equal expected, @enigma.encrypt("hello world")
   end
 
   def test_it_decrypts
@@ -131,7 +134,7 @@ class EnigmaTest < Minitest::Test
     Timecop.freeze(date)
 
     encrypted = @enigma.encrypt("hello world", "02715")
-    
+
     expected = {
       decryption: "hello world",
       key: "02715",
