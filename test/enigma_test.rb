@@ -170,11 +170,9 @@ class EnigmaTest < Minitest::Test
       key: ""
     }
 
-    actual = enigma.crack("vjqtbeaweqihssi")
+    actual = @enigma.crack("vjqtbeaweqihssi")
 
     assert_equal expected, actual
   end
-
-
 
 end

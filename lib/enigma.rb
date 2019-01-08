@@ -143,10 +143,14 @@ class Enigma
       split_index += 1
     end
 
+    create_offsets(date)
+    keys = [simple_shifts, @offsets].transpose.map {|pair| pair[0] - pair[1]}
+    key = crack_key(keys)
+
     decrypted = {}
     decrypted[:decryption] = decrypted_message.join
-    #decrypted[:key] = key
-    #decrypted[:date] = date
+    decrypted[:key] = key
+    decrypted[:date] = date
     return decrypted
 
   end
