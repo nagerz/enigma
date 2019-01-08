@@ -16,34 +16,71 @@ class EnigmaTest < Minitest::Test
   def test_it_has_attributes
     expected = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", " "]
 
-    assert_equal [], @enigma.keys
-    assert_equal [], @enigma.offsets
-    assert_equal [], @enigma.shifts
     assert_equal expected, @enigma.char_set
   end
 
   def test_it_creates_shift_keys
-    @enigma.encrypt("hello world", "02715", "040895")
+    key =  "02715"
 
     expected = [02, 27, 71, 15]
-    assert_equal expected, @enigma.keys
+    assert_equal expected, @enigma.create_keys(key)
   end
 
   def test_it_creates_shift_offsets
-    @enigma.encrypt("hello world", "02715", "040895")
+    date = "040895"
 
     expected = [1, 0, 2, 5]
-    assert_equal expected, @enigma.offsets
+    assert_equal expected, @enigma.create_offsets(date)
   end
 
   def test_it_creates_shifts
-    @enigma.encrypt("hello world", "02715", "040895")
+    key =  "02715"
+    keys = @enigma.create_keys(key)
+    date =  "040895"
+    offsets = @enigma.create_offsets(date)
 
-    expected = [3, 27, 73, 20]
-    assert_equal expected, @enigma.shifts
+    expected = [3, 0, 19, 20]
+    assert_equal expected, @enigma.create_shifts(keys, offsets)
+  end
+
+  def test_it_encrypts_letters
+    letter = "h"
+    index = 0
+    letter_2 = "!"
+    index_2 = 1
+    letter_3 = "z"
+    index_3 = 2
+    shifts = [4, 14, 1, 7]
+
+    assert_equal "l", @enigma.encrypt_letter(letter, index, shifts)
+    assert_equal "!", @enigma.encrypt_letter(letter_2, index_2, shifts)
+    assert_equal " ", @enigma.encrypt_letter(letter_3, index_3, shifts)
+  end
+
+  def test_it_encrypts_message
+    message = "hello_world!"
+    shifts = [4, 14, 1, 2]
+
+    assert_equal "lsmnsjptpr!", @enigma.encrypt_message(message, shifts)
+  end
+
+  def test_it_creates_encryption
+    skip
+    message = "encrypted text"
+    key = "02715"
+    date = "040895"
+
+    expected = {
+      encryption: "encrypted text",
+      key: "02715",
+      date: "040895"
+      }
+
+    assert_equal expected, @enigma.create_encryption(message, key, date)
   end
 
   def test_it_encrypts
+    skip
     expected = {
       encryption: "keder ohulw",
       key: "02715",
@@ -56,38 +93,42 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_defaults_to_todays_date
+    skip
     #Tested with today's date = 060119
-    date = Time.local(2019, 1, 6)
-    Timecop.freeze(date)
+    Time.local(2019, 1, 6)
+    # date = Time.local(2019, 1, 6)
+    # Timecop.freeze(date)
 
-    @enigma.encrypt("hello world", "02715")
+    encrypted = @enigma.encrypt("hello world", "02715")
 
     expected = [4, 1, 6, 1]
 
-    assert_equal expected, @enigma.offsets
+    assert_equal expected, encrypted[:date]
   end
 
   #Need better ways to test this
   def test_it_defaults_to_random_key
+    skip
     #Tested with today's date = 060119
-    date = Time.local(2019, 1, 6)
-    Timecop.freeze(date)
+    Time.local(2019, 1, 6)
+    # date = Time.local(2019, 1, 6)
+    # Timecop.freeze(date)
 
-    result = @enigma.encrypt("hello world")
+    encrypted = @enigma.encrypt("hello world")
 
-    assert_equal 5, result[:key].length
+    assert_equal 5, encrypted[:key].length
 
-    expected = @enigma.keys.all? do |key|
-      (0..99).include?(key)
-    end
+    expected = (0..99999).include?(encrypted[:key])
 
     assert_equal true, expected
   end
 
   def test_it_encrypts_with_todays_date
+    skip
     #Tested with today's date = 060119
-    date = Time.local(2019, 1, 6)
-    Timecop.freeze(date)
+    Time.local(2019, 1, 6)
+    # date = Time.local(2019, 1, 6)
+    # Timecop.freeze(date)
 
     expected = {
       encryption: "nfhauasdxm ",
@@ -104,8 +145,9 @@ class EnigmaTest < Minitest::Test
   def test_it_encrypts_with_random_key_and_todays_date
     skip
     #Tested with today's date = 060119
-    date = Time.local(2019, 1, 6)
-    Timecop.freeze(date)
+    Time.local(2019, 1, 6)
+    # date = Time.local(2019, 1, 6)
+    # Timecop.freeze(date)
 
     expected = {
       encryption: "hello world",
@@ -117,6 +159,7 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_decrypts
+    skip
     expected = {
       decryption: "hello world",
       key: "02715",
@@ -129,6 +172,7 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_decrypts_with_todays_date
+    skip
     #Tested with today's date = 060119
     date = Time.local(2019, 1, 6)
     Timecop.freeze(date)
@@ -147,6 +191,7 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_can_crack_with_a_date
+    skip
     expected = {
       decryption: "hello world end",
       date: "291018",
@@ -171,6 +216,22 @@ class EnigmaTest < Minitest::Test
     }
 
     actual = @enigma.crack("vjqtbeaweqihssi")
+
+    assert_equal expected, actual
+  end
+
+  def test_it_can_crack_with_todays_date2
+    skip
+    date = Time.local(2019, 1, 7)
+    Timecop.freeze(date)
+
+    expected = {
+      decryption: "hello world end",
+      date: "070119",
+      key: "45108"
+    }
+
+    actual = @enigma.crack("fuugmpejpamvccm")
 
     assert_equal expected, actual
   end

@@ -29,10 +29,13 @@ class CeaserCipherTest < Minitest::Test
     index = 0
     letter_2 = "e"
     index_2 = 1
-    shifts = [4, 14, 0, 7]
+    letter_3 = "e"
+    index_3 = 6
+    shifts = [4, 14, 1, 7]
 
     assert_equal "l", @ceaser.shift_letter(letter, index, shifts)
     assert_equal "s", @ceaser.shift_letter(letter_2, index_2, shifts)
+    assert_equal "f", @ceaser.shift_letter(letter_3, index_3, shifts)
   end
 
 end
