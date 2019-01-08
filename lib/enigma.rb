@@ -81,58 +81,50 @@ class Enigma
   end
 
   def crack(ciphertext, date = Date.today.strftime("%d%m%y"))
-    cipher_letters = ciphertext.downcase.split(//).pop(4)
-    hint = [" ", "e", "n", "d"]
-    shift_index = (ciphertext.length % 4) - 1
-    index = 3
-    cipher_letters.each do |letter|
-      shift = @char_set.index(cipher_letters[index]) - @char_set.index(hint[index])
-      # shift = (shift + 27) % 27
-      @shifts[shift_index] = shift
-      index -= 1
-      shift_index = (shift_index + 3) % 4
-    end
+    shift_rotate = find_shift_rotate(ciphertext)
+    crack_letters = clean_cipher_message(ciphertext).pop(4)
+    end_shifts = find_end_shifts(hint_indexes, crack_indexes(crack_letters))
+    shifts = end_shifts.rotate(shift_rotate)
 
-    simple_shifts = @shifts.map {|shift| shift % 27}
-    decrypted_message = []
-    split_cipher = ciphertext.downcase.split(//)
-    split_index = 0
-    split_cipher.each do |letter|
-      if @char_set.include?(letter)
-        if split_index % 4 == 0
-          shift_index = (@char_set.index(letter) - simple_shifts[0]) % 27
-          decrypted_letter = @char_set[shift_index]
-          decrypted_message << decrypted_letter
-        elsif split_index % 4 == 1
-          shift_index = (@char_set.index(letter) - simple_shifts[1]) % 27
-          decrypted_letter = @char_set[shift_index]
-          decrypted_message << decrypted_letter
-        elsif split_index % 4 == 2
-          shift_index = (@char_set.index(letter) - simple_shifts[2]) % 27
-          decrypted_letter = @char_set[shift_index]
-          decrypted_message << decrypted_letter
-        elsif split_index % 4 == 3
-          shift_index = (@char_set.index(letter) - simple_shifts[3]) % 27
-          decrypted_letter = @char_set[shift_index]
-          decrypted_message << decrypted_letter
-        end
-      else
-        decrypted_message << letter
-      end
-      split_index += 1
-    end
+    decrypted_message = encrypt_message(ciphertext, shifts, "decrypt")
 
-    create_offsets(date)
-    keys = [simple_shifts, @offsets].transpose.map {|pair| pair[0] - pair[1]}
+    offsets = create_offsets(date)
+    keys = [shifts, offsets].transpose.map {|pair| pair[0] - pair[1]}
     key = crack_key(keys)
 
     decrypted = {}
-    decrypted[:decryption] = decrypted_message.join
+    decrypted[:decryption] = decrypted_message
     decrypted[:date] = date
     decrypted[:key] = key
 
     return decrypted
+  end
 
+  def find_shift_rotate(text)
+    ((clean_cipher_message(text).length - 3) % 4) + 1
+  end
+
+  def clean_cipher_message(text)
+    cipher_letters = text.downcase.split(//)
+    cipher_letters.select {|letter| @char_set.include?(letter)}
+  end
+
+  def hint_indexes
+    hint = [" ", "e", "n", "d"]
+    hint.map do |letter|
+      @char_set.index(letter)
+    end
+  end
+
+  def crack_indexes(crack_letters)
+    crack_letters.map do |letter|
+      @char_set.index(letter)
+    end
+  end
+
+  def find_end_shifts(hints, cracks)
+    shifts = [hints, cracks].transpose.map {|pair| pair[0] - pair[1]}
+    shifts.map {|shift| 27 - (shift % 27)}
   end
 
 

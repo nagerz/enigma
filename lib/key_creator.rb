@@ -30,11 +30,13 @@ module KeyCreator
       @key_pairs = []
       key_arrays << check_next_remainder_value(keys, value)
     end
-    binding.pry
     key_arrays.flatten
   end
 
   def remainder_values(key)
+    if key < 0
+      key += 27
+    end
     values = (0..99).find_all {|i| i%27 == key}
     values.map do |value|
       value = sprintf '%02d', value

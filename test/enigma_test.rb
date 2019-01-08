@@ -160,8 +160,19 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, actual
   end
 
+  def test_it_can_clean_cipher_message
+    text = "H83hb 89&nj"
+
+    assert_equal ["h","h","b"," ","n","j"], @enigma.clean_cipher_message(text)
+  end
+
+  def test_it_can_find_shift_rotate
+    text = "H83hb 89&nj"
+
+    assert_equal 4, @enigma.find_shift_rotate(text)
+  end
+
   def test_it_can_crack_with_a_date
-    skip
     expected = {
       decryption: "hello world end",
       date: "291018",
@@ -174,11 +185,6 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_can_crack_with_todays_date
-    skip
-    #Tested with today's date = 060119
-    date = Time.local(2019, 1, 6)
-    Timecop.freeze(date)
-
     expected = {
       decryption: "hello world end",
       date: "060119",
