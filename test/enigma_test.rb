@@ -55,16 +55,16 @@ class EnigmaTest < Minitest::Test
     index_3 = 2
     shifts = [4, 14, 1, 7]
 
-    assert_equal "l", @enigma.encrypt_letter(letter, index, shifts)
-    assert_equal "!", @enigma.encrypt_letter(letter_2, index_2, shifts)
-    assert_equal " ", @enigma.encrypt_letter(letter_3, index_3, shifts)
+    assert_equal "l", @enigma.encrypt_letter(letter, index, shifts, "encrypt")
+    assert_equal "!", @enigma.encrypt_letter(letter_2, index_2, shifts, "encrypt")
+    assert_equal " ", @enigma.encrypt_letter(letter_3, index_3, shifts, "encrypt")
   end
 
   def test_it_encrypts_message
     message = "hello world!"
     shifts = [4, 14, 1, 2]
 
-    assert_equal "lsmnsnxqvze!", @enigma.encrypt_message(message, shifts)
+    assert_equal "lsmnsnxqvze!", @enigma.encrypt_message(message, shifts, "encrypt")
   end
 
   def test_it_creates_encryption
@@ -135,7 +135,6 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_decrypts
-    skip
     expected = {
       decryption: "hello world",
       key: "02715",
@@ -148,11 +147,6 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_decrypts_with_todays_date
-    skip
-    #Tested with today's date = 060119
-    date = Time.local(2019, 1, 6)
-    Timecop.freeze(date)
-
     encrypted = @enigma.encrypt("hello world", "02715")
 
     expected = {
