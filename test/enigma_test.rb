@@ -7,6 +7,9 @@ class EnigmaTest < Minitest::Test
 
   def setup
     @enigma = Enigma.new
+    #Tested with today's date = 060119
+    date = Time.local(2019, 1, 6)
+    Timecop.freeze(date)
   end
 
   def test_it_exists
@@ -58,14 +61,13 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_encrypts_message
-    message = "hello_world!"
+    message = "hello world!"
     shifts = [4, 14, 1, 2]
 
-    assert_equal "lsmnsjptpr!", @enigma.encrypt_message(message, shifts)
+    assert_equal "lsmnsnxqvze!", @enigma.encrypt_message(message, shifts)
   end
 
   def test_it_creates_encryption
-    skip
     message = "encrypted text"
     key = "02715"
     date = "040895"
@@ -80,7 +82,6 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_encrypts
-    skip
     expected = {
       encryption: "keder ohulw",
       key: "02715",
@@ -93,43 +94,23 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_defaults_to_todays_date
-    skip
-    #Tested with today's date = 060119
-    Time.local(2019, 1, 6)
-    # date = Time.local(2019, 1, 6)
-    # Timecop.freeze(date)
-
     encrypted = @enigma.encrypt("hello world", "02715")
 
-    expected = [4, 1, 6, 1]
-
-    assert_equal expected, encrypted[:date]
+    assert_equal "060119", encrypted[:date]
   end
 
   #Need better ways to test this
   def test_it_defaults_to_random_key
-    skip
-    #Tested with today's date = 060119
-    Time.local(2019, 1, 6)
-    # date = Time.local(2019, 1, 6)
-    # Timecop.freeze(date)
-
     encrypted = @enigma.encrypt("hello world")
 
     assert_equal 5, encrypted[:key].length
 
-    expected = (0..99999).include?(encrypted[:key])
+    expected = (0..99999).include?(encrypted[:key].to_i)
 
     assert_equal true, expected
   end
 
   def test_it_encrypts_with_todays_date
-    skip
-    #Tested with today's date = 060119
-    Time.local(2019, 1, 6)
-    # date = Time.local(2019, 1, 6)
-    # Timecop.freeze(date)
-
     expected = {
       encryption: "nfhauasdxm ",
       key: "02715",
@@ -144,13 +125,8 @@ class EnigmaTest < Minitest::Test
   #How to test?
   def test_it_encrypts_with_random_key_and_todays_date
     skip
-    #Tested with today's date = 060119
-    Time.local(2019, 1, 6)
-    # date = Time.local(2019, 1, 6)
-    # Timecop.freeze(date)
-
     expected = {
-      encryption: "hello world",
+      encryption: "random test",
       key: "02715",
       date: "060119"
       }

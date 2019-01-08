@@ -2,15 +2,20 @@ module KeyCreator
 
   def create_keys(key)
     pairs = []
+    keys = []
     key.chars.each_cons(2) {|a| pairs << a}
     pairs.map do |pair|
-      @keys << pair.join.to_i
+      keys << pair.join.to_i
     end
-    @keys
+    keys
   end
 
   def random_key
     sprintf '%05d', rand(1..99999)
+  end
+
+  def alt_crack_key
+
   end
 
   def crack_key(keys)
@@ -25,6 +30,7 @@ module KeyCreator
       @key_pairs = []
       key_arrays << check_next_remainder_value(keys, value)
     end
+    binding.pry
     key_arrays.flatten
   end
 
