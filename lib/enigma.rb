@@ -15,7 +15,6 @@ class Enigma
 
   def initialize
     @char_set = ("a".."z").to_a << " "
-    @key_pairs = []
   end
 
   def encrypt(message, key = random_key, date = Date.today.strftime("%d%m%y"))
@@ -29,6 +28,5 @@ class Enigma
   def crack(ciphertext, date = Date.today.strftime("%d%m%y"))
     crack_cipher(ciphertext, date, "decrypt")
   end
-
 
 end

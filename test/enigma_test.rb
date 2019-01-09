@@ -14,7 +14,8 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_has_character_set
-    expected = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", " "]
+    expected = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+       "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", " "]
 
     assert_equal expected, @enigma.char_set
   end
@@ -244,7 +245,7 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, actual
   end
 
-  #Can crack per manual test. Can't quite get the correct code.
+  #Can crack per manual test. Can't quite get the correct key.
   def test_it_can_crack_with_todays_date
     skip
     expected = {
@@ -258,7 +259,7 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, actual
   end
 
-  #Can crack per manual test. Can't quite get the correct code.
+  #Can crack per manual test. Can't quite get the correct key.
   def test_it_can_crack_with_todays_date_2
     skip
     expected = {
