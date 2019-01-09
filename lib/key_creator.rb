@@ -15,10 +15,18 @@ module KeyCreator
   end
 
   def alt_crack_key
-
   end
 
-  def crack_key(keys)
+  def crack_key(date, shifts)
+    offsets = create_offsets(date)
+    keys = [shifts, offsets].transpose.map {|pair| pair[0] - pair[1]}
+    keys = keys.map do |key|
+      if key < 0
+        key + 27
+      else
+        key
+      end
+    end
     unjoined_key_pairs = find_key_pairs(keys)
     unjoined_key_pairs[0]+unjoined_key_pairs[1][1]+unjoined_key_pairs[2][1]+unjoined_key_pairs[3][1]
   end
@@ -27,7 +35,6 @@ module KeyCreator
     key_arrays = []
     first_remainder_values = remainder_values(keys[0])
     first_remainder_values.each do |value|
-      @key_pairs = []
       key_arrays << check_next_remainder_value(keys, value)
     end
     key_arrays.flatten
