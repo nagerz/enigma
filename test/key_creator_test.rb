@@ -44,6 +44,7 @@ class KeyCreatorTest < Minitest::Test
     assert_equal 4, @key_creator.create_keys(key).length
   end
 
+  ###Crack key tests. Couldn't get to key.
   def test_it_can_find_remainder_values_set
     key = 8
     remainder_set = ["08", "35", "62", "89"]

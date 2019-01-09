@@ -14,9 +14,12 @@ module KeyCreator
     sprintf '%05d', rand(1..99999)
   end
 
+  #Would be method that cracks key by generating all numbers from 0 to 99999
+  #and checking each one ot see if it results in an decrypted message.
   def alt_crack_key
   end
 
+  #Attempted to reverse engineer crack key. Couldn't quite get there.
   def crack_key(date, shifts)
     offsets = create_offsets(date)
     keys = [shifts, offsets].transpose.map {|pair| pair[0] - pair[1]}
@@ -33,6 +36,7 @@ module KeyCreator
 
   def find_key_pairs(keys)
     key_arrays = []
+    @key_pairs = []
     first_remainder_values = remainder_values(keys[0])
     first_remainder_values.each do |value|
       key_arrays << check_next_remainder_value(keys, value)
