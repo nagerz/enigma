@@ -2,6 +2,7 @@ require './lib/key_creator'
 require './lib/cryptor'
 require './lib/ceaser_cipher'
 require './lib/cracker'
+require 'date'
 
 class Enigma
   include KeyCreator
