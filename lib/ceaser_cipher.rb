@@ -10,5 +10,5 @@ module CeaserCipher
       @char_set.rotate(shift * -1)[letter_index]
     end
   end
-  
+
 end
