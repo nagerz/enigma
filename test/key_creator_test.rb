@@ -59,14 +59,15 @@ class KeyCreatorTest < Minitest::Test
   end
 
   def test_it_finds_key_pairs
+    skip
     keys = [8, 2, 3, 4]
-    @key_creator.crack_key(keys)
     key_pairs = ["08", "83", "30", "04"]
 
     assert_equal key_pairs, @key_creator.find_key_pairs(keys)
   end
 
   def test_it_finds_cracked_code_key
+    skip
     keys = [8, 2, 3, 4]
 
     assert_equal "08304", @key_creator.crack_key(keys)
