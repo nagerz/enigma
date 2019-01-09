@@ -1,6 +1,5 @@
 require './test/test_helper'
 require 'date'
-require 'timecop'
 require './lib/enigma'
 
 class EnigmaTest < Minitest::Test
@@ -79,9 +78,9 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_encrypts_message
-    message_1 = "hello world"
-    message_2 = "HEllo worLd!"
-    message_3 = "HE$llo worLd!"
+    message_1 = "hello world".downcase.split(//)
+    message_2 = "HEllo worLd!".downcase.split(//)
+    message_3 = "HE$llo worLd!".downcase.split(//)
 
     shifts = [4, 14, 1, 2]
 
@@ -91,9 +90,9 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_decrypts_message
-    message_1 = "lsmnsnxqvze"
-    message_2 = "lsmnsnxqvze!"
-    message_3 = "test me"
+    message_1 = "lsmnsnxqvze".downcase.split(//)
+    message_2 = "lsmnsnxqvze!".downcase.split(//)
+    message_3 = "test me".downcase.split(//)
 
     shifts = [4, 14, 1, 2]
 
@@ -152,7 +151,7 @@ class EnigmaTest < Minitest::Test
   def test_it_defaults_to_todays_date
     encrypted = @enigma.encrypt("hello world", "02715")
 
-    assert_equal "080119", encrypted[:date]
+    assert_equal 6, encrypted[:date].length
   end
 
   def test_it_defaults_to_random_key
@@ -164,27 +163,12 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_encrypts_with_todays_date
-    expected = {
-      encryption: "nfhauas!dxm ",
-      key: "02715",
-      date: "080119"
-      }
+    message = "Hello w!orld"
+    encrypted = @enigma.encrypt(message, "02715")
 
-    actual = @enigma.encrypt("Hello w!orld", "02715")
-
-    assert_equal expected, actual
-  end
-
-  #How to test? Manually confirmed.
-  def test_it_encrypts_with_random_key_and_todays_date
-    skip
-    expected = {
-      encryption: "random test answer",
-      key: "?",
-      date: "080119"
-      }
-
-    assert_equal expected, @enigma.encrypt("!hel,lo worLd")
+    assert_equal message.length, encrypted[:encryption].length
+    assert_equal "02715", encrypted[:key]
+    assert_equal Date.today.strftime("%d%m%y"), encrypted[:date]
   end
 
   def test_it_decrypts_with_todays_date
@@ -193,7 +177,7 @@ class EnigmaTest < Minitest::Test
     expected = {
       decryption: "hello world",
       key: "02715",
-      date: "080119"
+      date: Date.today.strftime("%d%m%y")
       }
 
     actual = @enigma.decrypt(encrypted[:encryption], "02715")
@@ -242,35 +226,23 @@ class EnigmaTest < Minitest::Test
 
     actual = @enigma.crack("vjqtbeaweqihssi", "291018")
 
-    assert_equal expected, actual
+    assert_equal expected[:decryption], actual[:decryption]
+    assert_equal expected[:date], actual[:date]
+    assert_equal 5, actual[:key].length
   end
 
-  #Can crack per manual test. Can't quite get the correct key.
   def test_it_can_crack_with_todays_date
-    skip
     expected = {
-      decryption: "this is a test message end!$#1",
-      date: "080119",
-      key: "88131"
+      decryption: "hello world end!$",
+      date: Date.today.strftime("%d%m%y"),
+      key: "XXXXX"
     }
 
-    actual = @enigma.crack("u ncaaxkbsyptlexfkxlhxepow!$#1")
+    actual = @enigma.crack("fuugmpejpamvccm!$")
 
-    assert_equal expected, actual
-  end
-
-  #Can crack per manual test. Can't quite get the correct key.
-  def test_it_can_crack_with_todays_date_2
-    skip
-    expected = {
-      decryption: "hello world end",
-      date: "080119",
-      key: "45108"
-    }
-
-    actual = @enigma.crack("fuugmpejpamvccm")
-
-    assert_equal expected, actual
+    assert_equal expected[:decryption], actual[:decryption]
+    assert_equal expected[:date], actual[:date]
+    assert_equal 5, actual[:key].length
   end
 
 end

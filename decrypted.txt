@@ -1,1 +1,2 @@
-"hello world!"
+"the world is gonna end"
+"this is a test message end!$#1"

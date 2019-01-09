@@ -5,7 +5,8 @@ module Cryptor
     offsets = create_offsets(date)
     shifts = create_shifts(keys, offsets)
 
-    translated_message = translate_message(message, shifts, type)
+    split_message = message.downcase.split(//)
+    translated_message = translate_message(split_message, shifts, type)
 
     create_cryption(translated_message, key, date, type)
   end
@@ -24,19 +25,22 @@ module Cryptor
     shifts.map {|shift| shift % 27}
   end
 
-  def translate_message(message, shifts, type)
-    split_message = message.downcase.split(//)
+  def translate_message(split_message, shifts, type)
     translated_message = []
     index = 0
     split_message.each do |letter|
-      if @char_set.include?(letter)
-        translated_message << shift_letter(letter, index, shifts, type)
-        index += 1
-      else
-        translated_message << letter
-      end
+      translated_message << translate_letter(letter, index, shifts, type)
+      index += 1 if @char_set.include?(letter)
     end
     translated_message.join
+  end
+
+  def translate_letter(letter, index, shifts, type)
+    if @char_set.include?(letter)
+      shift_letter(letter, index, shifts, type)
+    else
+      letter
+    end
   end
 
   def create_cryption(crypted_message, key, date, type)
