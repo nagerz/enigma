@@ -6,10 +6,9 @@ module Cracker
     end_shifts = find_end_shifts(crack_indexes(crack_letters), hint_indexes)
     shifts = end_shifts.rotate(shift_rotate)
 
-    decrypted_message = translate_message(ciphertext, shifts, type)
+    decrypted_message = translate_message(ciphertext.downcase.split(//), shifts, type)
 
-    # key = crack_key(date, shifts)
-    key = "Unknown"
+    key = "XXXXX"
     create_cryption(decrypted_message, key, date, type)
   end
 
@@ -19,7 +18,7 @@ module Cracker
   end
 
   def find_shift_rotate(text)
-    ((clean_cipher_message(text).length - 3) % 4) + 1
+    (clean_cipher_message(text).length % 4) + 2
   end
 
   def hint_indexes

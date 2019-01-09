@@ -2,7 +2,7 @@ require './lib/enigma'
 require 'date'
 
 message = File.read(ARGV[0])
-date = ARGV[3].to_s
+date = ARGV[2]
 
 
 enigma = Enigma.new
