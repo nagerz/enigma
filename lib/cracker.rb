@@ -8,6 +8,7 @@ module Cracker
 
     decrypted_message = translate_message(ciphertext.downcase.split(//), shifts, type)
 
+    # key = crack_key(date, shifts)
     key = "XXXXX"
     create_cryption(decrypted_message, key, date, type)
   end
